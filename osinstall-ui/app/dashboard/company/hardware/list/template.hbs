@@ -1,0 +1,119 @@
+<div class="panel panel-default">
+		<div class="paddingtop10 paddingright15" style="float:right;">
+	        	{{#link-to "dashboard.company.hardware.new" "new"}}<button type="button" class="btn btn-primary btn-xs">添加新设备型号</button>{{/link-to}}
+	        	&nbsp;
+	        	{{#link-to "dashboard.company.hardware.import"}}<button type="button" class="btn btn-primary btn-xs">导入设备型号</button>{{/link-to}}
+	        </div>
+    <!--
+    <div class="panel-heading paddingtop0" style="display:none">
+        <div class="breadcrumb paddingtop3 paddingleft0">
+	        <div style="float: left;">
+	        	<h5>设备型号管理</h5>
+	        </div>
+			<div style="float:right; position: relative; top: 7px; left: 16px;">
+	        	{{#link-to "dashboard.company.hardware.new" "new"}}<button type="button" class="btn btn-primary btn-xs">添加新设备型号</button>{{/link-to}}
+	        	&nbsp;
+	        	{{#link-to "dashboard.company.hardware.import"}}<button type="button" class="btn btn-primary btn-xs">导入设备型号</button>{{/link-to}}
+	        </div>
+        </div>
+    </div>
+    -->
+    <div class="panel-body">
+		{{#common/io-form-validator submitForm="searchAction"}}
+		<form class="form-horizontal">
+		<div style="margin-bottom: 10px;">
+			<table class="table no-border">
+			<tbody>
+				<tr>
+					<td width="15%" align="right">搜索</td>
+					<td width="85%" colspan=3>
+
+							<div class="col-md-3">
+								{{view "select" class="form-control" prompt="--请选择厂商--"
+			 content=model.companyData value=Company optionValuePath="content.Company" optionLabelPath="content.Company" }}
+							</div>
+							
+							<!--
+							<div class="col-md-3">
+								{{view "select" class="form-control" prompt="--请选择产品名称--"
+			 content=model.productData value=Product optionValuePath="content.Product" optionLabelPath="content.Product" }}
+							</div>
+							-->
+
+							<div class="col-md-3">
+								{{view "select" class="form-control" prompt="--请选择产品型号--"
+			 content=model.modelNameData value=ModelName optionValuePath="content.ModelName" optionLabelPath="content.ModelName" }}
+							</div>
+						
+
+						<div class="col-md-2">
+							<button type="submit" class="btn btn-primary">搜 索</button>
+							&nbsp;&nbsp;
+						</div>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+		</form>
+		{{/common/io-form-validator}}
+
+        <table class="table  big">
+            <thead>
+                <tr>
+                	<th>{{input type="checkbox" checked=selectAll}}</th>
+                	<th>ID</th>
+                    <th>服务器厂商</th>
+                    <th>产品型号</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            	{{#each rowList as |item index|}}
+                <tr>
+                	<td>{{input type="checkbox" checked=item.checked}}</td>
+                	<td>{{#link-to "dashboard.company.hardware.detail" item.ID}}{{item.ID}}{{/link-to}}</td>
+					<td>{{item.Company}}</td>
+					<!--<td>{{item.Product}}</td>-->
+					<td>{{item.ModelName}}</td>
+					<td>
+						{{#if (eq "Pending" item.Status)}}
+							<span>待审核</span>
+						{{/if}}
+						{{#if (eq "Success" item.Status)}}
+							<span class="text-success">审核成功</span>
+						{{/if}}
+						{{#if (eq "Failure" item.Status)}}
+							<span class="text-danger">审核失败</span>
+						{{/if}}
+					</td>
+					<td>
+							{{#link-to "dashboard.company.hardware.new" item.ID}}<i title="克隆" class="io-fa icon-copy"></i>{{/link-to}}
+	                        &nbsp;&nbsp;
+	                        {{#link-to "dashboard.company.hardware.edit" item.ID}}<i title="修改" class="io-fa icon-edit"></i>{{/link-to}}
+	                        &nbsp;&nbsp;
+	                        <a style="" href="javascript:void(0);" {{action "deleteAction" item.ID}}><i title="删除" class="io-fa icon-delete"></i></a>
+					</td>
+				</tr>
+				{{/each}}
+            </tbody>
+        </table>
+
+        <div class="row padding0">
+					<div class="col-sm-6">
+			       		<button type="button" {{action "exportSelectedAction"}} class="btn btn-default btn-sm">导出选中</button>
+						&nbsp;&nbsp;&nbsp;
+			       		<a href="/api/osinstall/v1/hardware/export">
+			       		<button type="button" {{action "exportAction"}} class="btn btn-default btn-sm">导出全部</button>
+			       		</a>
+			       	</div>
+			       	<div class="col-sm-6">
+			       		{{#if (not-eq 1 pageCount)}}
+			       			{{#common/io-pagination count=pageCount current=page change='pageChanged'}}{{/common/io-pagination}}
+			       		{{/if}}
+			       	</div>
+		</div>
+
+    </div>
+</div>

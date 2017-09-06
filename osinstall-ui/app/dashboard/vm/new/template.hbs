@@ -1,0 +1,134 @@
+<div class="panel panel-default">
+	{{#common/io-form-validator submitForm="saveVmAction"}}
+	<form class="form-horizontal">
+    <div class="panel-body">
+        <table class="table no-border">
+			<tbody>
+				<tr>
+					<td align="right" width="20%"><label>宿主机</label></td>
+					<td width="80%">
+						<div class="col-md-5">
+							{{model.deviceInfo.Sn}}
+						</div>
+						<div class="col-md-5" style="margin-top: 5px;">
+							
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td align="right" width="20%"><label class="required">主机名</label></td>
+					<td width="80%">
+						<div class="col-md-5">
+							{{input class="form-control" required=true value=model.vmInfo.Hostname}}
+						</div>
+						<div class="col-md-5" style="margin-top: 5px;">
+							<span>可自定义</span>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="right" width="20%"><label class="required">Mac地址</label></td>
+					<td width="80%">
+						<div class="col-md-5">
+							{{input class="form-control" required=true value=model.vmInfo.Mac}}
+						</div>
+						<div class="col-md-5" style="margin-top: 5px;">
+							<span>可自定义，必须以"52:54:00"开头</span>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="right" width="20%"><label class="required">IP</label></td>
+					<td width="80%">
+						<div class="col-md-5">
+							{{input class="form-control" required=true value=model.vmInfo.Ip}}
+						</div>
+						<div class="col-md-7" style="margin-top: 5px;font-size: 12px;">
+							{{html-safe model.vmInfo.messageIp}}
+							{{#if model.vmInfo.isShowNetworkInfo}}
+								<span class="text-success" style="margin-left: 10px;">
+								匹配到网段:{{model.vmInfo.Network}}
+								</span>
+							{{/if}}
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="right"><label class="required">PXE模板</label></td>
+					<td>
+						<div class="col-md-3">
+							{{view "select" required=true class="form-control" prompt="请选择PXE模板"
+ content=model.osConfigData value=model.vmInfo.OsID optionValuePath="content.ID" optionLabelPath="content.Name" }}
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="right"><label class="required">系统安装模板</label></td>
+					<td>
+						<div class="col-md-3">
+ 							{{view "select" required=true class="form-control" prompt="请选择系统模板"
+ content=model.systemConfigData value=model.vmInfo.SystemID optionValuePath="content.ID" optionLabelPath="content.Name" }}
+						</div>
+						<div class="col-md-5" style="margin-top: 5px;">
+							{{input type="checkbox" checked=model.vmInfo.isShowMore}}
+							<label>高级设置</label>
+						</div>
+					</td>
+				</tr>
+				
+				{{#if model.vmInfo.isShowMore}}
+				<tr>
+					<td align="right"><label class="required">CPU核数</label></td>
+					<td>
+						<div class="col-md-3">
+							{{view "select" required=true class="form-control" prompt="请选择CPU核数"
+ content=model.cpuData value=model.vmInfo.CpuCoresNumber optionValuePath="content.ID" optionLabelPath="content.Name" }}
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="right"><label class="required">分配内存</label></td>
+					<td>
+						<div class="col-md-3">
+							{{view "select" required=true class="form-control" prompt="请选择内存大小"
+ content=model.memoryData value=model.vmInfo.MemoryCurrent optionValuePath="content.ID" optionLabelPath="content.Name" }}
+						</div>
+						<div class="col-md-1" style="padding-right: 0px;margin-top:6px;">
+							GB
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="right"><label class="required">磁盘大小</label></td>
+					<td>
+						<div class="col-md-3">
+							{{input class="form-control" type="number" value=model.vmInfo.DiskSize}}
+						</div>
+						<div class="col-md-1" style="padding-right: 0px;margin-top:6px;">
+							GB
+						</div>
+					</td>
+				</tr>
+				{{/if}}
+			</tbody>
+		</table>
+
+		
+		<div class="text-center">
+	        <button type="submit" class="btn btn-primary">提 交</button>
+	        &nbsp;&nbsp;
+	        <button type="button" onclick="javascript:history.go(-1);" class="btn btn-default">取　消</button>
+	        &nbsp;&nbsp;
+	        {{html-safe model.vmInfo.Message}}
+		</div>
+
+    </div>
+    </form>
+	{{/common/io-form-validator}}
+</div>
